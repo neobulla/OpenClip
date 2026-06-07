@@ -1,0 +1,15 @@
+rules:
+  - id: rust-unsafe-block
+    patterns:
+      - pattern: unsafe { ... }
+    message: "Using unsafe blocks can lead to memory safety issues. Ensure it is absolutely necessary and thoroughly reviewed."
+    languages:
+      - rust
+    severity: WARNING
+  - id: rust-unwrap-used
+    patterns:
+      - pattern: $X.unwrap()
+    message: "Using .unwrap() can cause panics. Consider using pattern matching, ? operator, or expect() with a descriptive message."
+    languages:
+      - rust
+    severity: WARNING
