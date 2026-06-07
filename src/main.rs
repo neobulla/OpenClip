@@ -192,6 +192,16 @@ fn update_menu(tray_icon: &TrayIcon, history: &VecDeque<Clipping>, config: &Conf
 }
 
 fn run_daemon_mode() -> Result<(), Box<dyn std::error::Error>> {
+    // Single instance lock
+    let _single_instance_lock = match std::net::TcpListener::bind("127.0.0.1:42911") {
+        Ok(listener) => listener,
+        Err(_) => {
+            println!("OpenClip is already running. Exiting.");
+            std::process::exit(0);
+        }
+    };
+
+    let mut config = Config::load();
     #[cfg(target_os = "macos")]
     {
         use objc2_app_kit::{NSApplication, NSApplicationActivationPolicy};
