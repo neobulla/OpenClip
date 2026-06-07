@@ -176,10 +176,10 @@ impl eframe::App for GuiApp {
 }
 
 fn main() -> eframe::Result<()> {
-    // Single instance lock for GUI
-    let _single_instance_lock = match std::net::TcpListener::bind("127.0.0.1:42912") {
-        Ok(listener) => listener,
-        Err(_) => {
+    // Single instance lock for GUI (Secure POSIX flock inside user's Application Support dir)
+    let _single_instance_lock = match Config::lock_instance("gui") {
+        Some(lock) => lock,
+        None => {
             println!("OpenClip Preferences is already running. Exiting.");
             std::process::exit(0);
         }

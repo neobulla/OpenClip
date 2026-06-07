@@ -192,10 +192,10 @@ fn update_menu(tray_icon: &TrayIcon, history: &VecDeque<Clipping>, config: &Conf
 }
 
 fn run_daemon_mode() -> Result<(), Box<dyn std::error::Error>> {
-    // Single instance lock
-    let _single_instance_lock = match std::net::TcpListener::bind("127.0.0.1:42911") {
-        Ok(listener) => listener,
-        Err(_) => {
+    // Single instance lock (Secure POSIX flock inside user's Application Support dir)
+    let _single_instance_lock = match Config::lock_instance("daemon") {
+        Some(lock) => lock,
+        None => {
             println!("OpenClip is already running. Exiting.");
             std::process::exit(0);
         }

@@ -38,6 +38,29 @@ impl Config {
         }
     }
 
+    pub fn lock_instance(name: &str) -> Option<std::fs::File> {
+        if let Some(proj_dirs) = ProjectDirs::from("com", "openclip", "OpenClip") {
+            let config_dir = proj_dirs.config_dir();
+            if !config_dir.exists() {
+                let _ = fs::create_dir_all(config_dir);
+            }
+            let lock_path = config_dir.join(format!("{}.lock", name));
+            if let Ok(file) = std::fs::OpenOptions::new().write(true).create(true).open(lock_path) {
+                #[cfg(unix)]
+                {
+                    use std::os::unix::io::AsRawFd;
+                    unsafe extern "C" { fn flock(fd: i32, operation: i32) -> i32; }
+                    let ret = unsafe { flock(file.as_raw_fd(), 2 | 4) }; // LOCK_EX | LOCK_NB
+                    if ret != 0 {
+                        return None;
+                    }
+                }
+                return Some(file);
+            }
+        }
+        None
+    }
+
     pub fn load() -> Self {
         if let Some(path) = Self::get_config_path() {
             if let Ok(data) = fs::read_to_string(path) {
