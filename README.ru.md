@@ -48,7 +48,7 @@ OpenClip использует индустриальные стандарты р
 
 ## 📸 Сравнение интерфейса: OpenClip против CopyClip
 
-| 🌟 OpenClip (Современный стиль) | ❌ CopyClip (Устаревший дизайн) |
+| 🌟 OpenClip | ❌ CopyClip |
 |:---:|:---:|
 | <img src="assets/screenshot1.png" width="400"> | <img src="assets/screenshot2.png" width="400"> |
 
