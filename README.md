@@ -48,7 +48,7 @@ OpenClip implements industrial-level memory management:
 
 ## 📸 Screenshots: OpenClip vs CopyClip
 
-| 🌟 OpenClip (Modern & Native) | ❌ CopyClip (Old Design) |
+| 🌟 OpenClip | ❌ CopyClip |
 |:---:|:---:|
 | <img src="assets/screenshot1.png" width="400"> | <img src="assets/screenshot2.png" width="400"> |
 
